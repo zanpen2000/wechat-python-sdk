@@ -364,6 +364,17 @@ class WechatBasic(object):
             data=menu_data
         )
 
+
+    def create_condition_menu(self, menu_data):
+        self._check_appid_appsecret()
+
+        menu_data = self._transcoding_dict(menu_data)
+        return self._post(
+            url='https://api.weixin.qq.com/cgi-bin/menu/addconditional',
+            data=menu_data
+        )
+
+
     def get_menu(self):
         """
         查询自定义菜单
@@ -846,6 +857,338 @@ class WechatBasic(object):
                 "data": unicode_data
             }
         )
+
+
+    def create_product(self, product_data):
+        self._check_appid_appsecret()
+        
+        product_data = self._transcoding_dict(product_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/create',
+            data=product_data
+        )
+
+
+    def delete_product(self, product_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/del',
+            data={
+                'product_id': product_id
+            }
+        )
+
+
+    def update_product(self, product_data):
+        self._check_appid_appsecret()
+        
+        product_data = self._transcoding_dict(product_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/update',
+            data=product_data
+        )
+
+
+    def get_product_info(self, product_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/get',
+            data={
+                'product_id': product_id
+            }
+        )
+
+    
+    def get_merchat_by_status(self, status_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/getbystatus',
+            data={
+                'status': status_id
+            }
+        )
+
+
+    def modify_product_status(self, product_id, status_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/modproductstatus',
+            data={
+                'product_id': product_id,
+                'status': status_id
+            }
+        )
+
+
+    def get_sub_of_category(self, cate_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/getsub',
+            data={
+                'cate_id': cate_id
+            }
+        )
+
+
+    def get_sku_of_sub(self, cate_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/getsku',
+            data={
+                'cate_id': cate_id
+            }
+        )
+
+
+    def get_property_of_sub(self, cate_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/getproperty',
+            data={
+                'cate_id': cate_id
+            }
+        )
+
+
+    def add_product(self, product_data):
+        self._check_appid_appsecret()
+
+        product_data = self._transcoding_dict(product_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/stock/add',
+            data=product_data
+        )
+
+
+    def reduce_product(self, product_data):
+        self._check_appid_appsecret()
+
+        product_data = self._transcoding_dict(product_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/stock/reduce',
+            data=product_data
+        )
+
+
+    def add_express_template(self, template_data):
+        self._check_appid_appsecret()
+
+        template_data = self._transcoding_dict(template_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/express/add',
+            data=template_data
+        )
+
+
+    def del_express_template(self, template_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/express/del',
+            data={
+                'template_id': template_id,
+            }
+        )
+
+
+    def update_express_template(self, template_id, template_data):
+        self._check_appid_appsecret()
+        
+        template_data = self._transcoding_dict(template_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/express/update',
+            data={
+                'template_id': template_id,
+                'delivery_template': template_data
+            }
+        )
+
+
+    def get_template_by_id(self, template_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/express/getbyid',
+            data={
+                'template_id': template_id,
+            }
+        )
+
+
+    def get_all_templates(self, template_id):
+        self._check_appid_appsecret()
+
+        return self._get('https://api.weixin.qq.com/merchant/category/express/getall')
+
+
+    def add_merchant_group(self, group_name, product_list):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/group/add',
+            data={
+                'group_detail': {
+                    'group_name': group_name,
+                    'product_list': product_list
+                }
+            }
+        )
+
+
+    def del_merchat_group_by_id(self, group_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/group/del',
+            data={
+                'group_id': group_id,
+            }
+        )
+
+
+    def modify_merchat_group_property(self, group_data):
+        self._check_appid_appsecret()
+
+        group_data = self._transcoding_dict(group_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/group/propertymod',
+            data=group_data
+        )
+
+
+    def modify_merchat_group_product(self, group_id, product_data_list):
+        self._check_appid_appsecret()
+
+        product_data_list = [self._transcoding_dict(product_data) for product_data in product_data_list]
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/category/group/productmod',
+            data={
+                'group_id': group_id,
+                'product': product_data_list
+            }
+        )
+
+
+    def get_all_merchat_group(self):
+        self._check_appid_appsecret()
+
+        return self._get('https://api.weixin.qq.com/merchant/group/getall')
+
+
+    def get_merchat_group_by_id(self, group_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/group/getbyid',
+            data={
+                'group_id': group_id,
+            }
+        )
+
+
+    def add_merchant_shelf(self, shelf_data, shelf_banner, shelf_name):
+        self._check_appid_appsecret()
+
+        shelf_data = self._transcoding_dict(shelf_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/shelf/add',
+            data={
+                'shelf_data': shelf_data,
+                'shelf_banner': shelf_banner,
+                'shelf_name': shelf_name
+            }
+        )
+
+
+    def del_merchat_shelf_by_id(self, shelf_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/shelf/del',
+            data={
+                'shelf_id': shelf_id,
+            }
+        )
+
+
+    def modify_merchat_shelf_by_id(self, shelf_id, shelf_data, shelf_banner, shelf_name):
+        self._check_appid_appsecret()
+
+        shelf_data = self._transcoding_dict(shelf_data)
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/shelf/mod',
+            data={
+                'shelf_id': shelf_id,
+                'shelf_data': shelf_data,
+                'shelf_banner': shelf_banner,
+                'shelf_name': shelf_name
+            }
+        )
+
+
+    def get_all_merchat_shelf(self):
+        self._check_appid_appsecret()
+
+        return self._get('https://api.weixin.qq.com/merchant/shelf/getall')
+
+
+    def get_merchat_group_by_id(self, shelf_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/shelf/getbyid',
+            data={
+                'shelf_id': shelf_id,
+            }
+        )
+
+
+    def get_merchat_order_by_id(self, order_id):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/order/getbyid',
+            data={
+                'order_id': order_id,
+            }
+        )
+
+
+    def get_merchat_order_by_filter(self, status=None, begintime=None, endtime=None):
+        self._check_appid_appsecret()
+
+        order_data = {}
+        if status:
+            order_data['status'] = status
+        if begintime:
+            order_data['begintime'] = begintime
+        if endtime:
+            order_data['endtime'] = endtime
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/order/getbyfilter',
+            data=order_data
+        )
+
+
+    def set_delivery_info(self, order_id, delivery_company, delivery_track_no):
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/order/getbyfilter',
+            data={
+                'order_id': order_id,
+                'delivery_company': delivery_company,
+                'delivery_track_no': delivery_track_no
+            }
+        )
+
 
     @property
     def access_token(self):
