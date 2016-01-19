@@ -859,9 +859,16 @@ class WechatBasic(object):
         )
 
 
+    #商品管理接口
     def create_product(self, product_data):
+        """
+        增加商品
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_data: 商品详细信息，格式参见文档
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
-        
+
         product_data = self._transcoding_dict(product_data)
         return self._post(
             url='https://api.weixin.qq.com/merchant/create',
@@ -870,6 +877,12 @@ class WechatBasic(object):
 
 
     def delete_product(self, product_id):
+        """
+        删除商品
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_id: 商品id
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -881,8 +894,14 @@ class WechatBasic(object):
 
 
     def update_product(self, product_data):
+        """
+        修改商品
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_data: 商品详细信息（包括id）
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
-        
+
         product_data = self._transcoding_dict(product_data)
         return self._post(
             url='https://api.weixin.qq.com/merchant/update',
@@ -891,6 +910,12 @@ class WechatBasic(object):
 
 
     def get_product_info(self, product_id):
+        """
+        查询商品
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_id: 商品id
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -900,8 +925,14 @@ class WechatBasic(object):
             }
         )
 
-    
+
     def get_merchat_by_status(self, status_id):
+        """
+        获取指定状态的所有商品
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param status_id: 商品状态(0-全部, 1-上架, 2-下架)
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -913,6 +944,13 @@ class WechatBasic(object):
 
 
     def modify_product_status(self, product_id, status_id):
+        """
+        商品上下架
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_id: 商品id
+        :param status_id: 商品状态(0-全部, 1-上架, 2-下架)
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -925,6 +963,12 @@ class WechatBasic(object):
 
 
     def get_sub_of_category(self, cate_id):
+        """
+        获取指定分类的所有子分类
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param cate_id: 大分类ID(根节点分类id为1)
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -936,6 +980,12 @@ class WechatBasic(object):
 
 
     def get_sku_of_sub(self, cate_id):
+        """
+        获取指定子分类的所有SKU
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param cate_id: 商品子分类ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -947,6 +997,12 @@ class WechatBasic(object):
 
 
     def get_property_of_sub(self, cate_id):
+        """
+        获取指定分类的所有属性
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param cate_id: 分类ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -957,27 +1013,58 @@ class WechatBasic(object):
         )
 
 
-    def add_product(self, product_data):
+    #库存管理接口
+    def add_stock(self, product_id, sku_info, quantity):
+        """
+        增加库存
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_id: 商品ID
+        :param sku_info: sku信息,格式"id1:vid1;id2:vid2",如商品为统一规格，则此处赋值为空字符串即可
+        :param quantity: 增加的库存数量
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
-        product_data = self._transcoding_dict(product_data)
         return self._post(
             url='https://api.weixin.qq.com/merchant/category/stock/add',
-            data=product_data
+            data={
+                    "product_id": product_id,
+                    "sku_info": sku_info,
+                    "quantity": quantity
+                }
         )
 
 
-    def reduce_product(self, product_data):
+    def reduce_stock(self, product_id, sku_info, quantity):
+        """
+        减少库存
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param product_id: 商品ID
+        :param sku_info: sku信息,格式"id1:vid1;id2:vid2",如商品为统一规格，则此处赋值为空字符串即可
+        :param quantity: 减少的库存数量
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         product_data = self._transcoding_dict(product_data)
         return self._post(
             url='https://api.weixin.qq.com/merchant/category/stock/reduce',
-            data=product_data
+            data={
+                    "product_id": product_id,
+                    "sku_info": sku_info,
+                    "quantity": quantity
+                }
         )
 
 
+    #邮费模板管理接口
     def add_express_template(self, template_data):
+        """
+        增加邮费模板
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param template_data: 邮费信息，具体请参考文档
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         template_data = self._transcoding_dict(template_data)
@@ -988,6 +1075,12 @@ class WechatBasic(object):
 
 
     def del_express_template(self, template_id):
+        """
+        删除邮费模板
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param template_id: 邮费模板ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -999,8 +1092,15 @@ class WechatBasic(object):
 
 
     def update_express_template(self, template_id, template_data):
+        """
+        修改邮费模板
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param template_id: 邮费模板ID
+        :param template_data: 邮费信息，具体请参考文档
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
-        
+
         template_data = self._transcoding_dict(template_data)
         return self._post(
             url='https://api.weixin.qq.com/merchant/category/express/update',
@@ -1012,6 +1112,12 @@ class WechatBasic(object):
 
 
     def get_template_by_id(self, template_id):
+        """
+        获取指定ID的邮费模板
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param template_id: 邮费模板ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1022,13 +1128,25 @@ class WechatBasic(object):
         )
 
 
-    def get_all_templates(self, template_id):
+    def get_all_templates(self):
+        """
+        获取所有邮费模板
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._get('https://api.weixin.qq.com/merchant/category/express/getall')
 
-
+    #分组管理接口
     def add_merchant_group(self, group_name, product_list):
+        """
+        增加分组
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param group_name: 分组名称
+        :param product_list: 商品ID集合，列表格式
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1043,6 +1161,12 @@ class WechatBasic(object):
 
 
     def del_merchat_group_by_id(self, group_id):
+        """
+        删除分组
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param group_id: 分组ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1054,6 +1178,12 @@ class WechatBasic(object):
 
 
     def modify_merchat_group_property(self, group_data):
+        """
+        修改分组属性
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param group_id: 分组信息（id和name）
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         group_data = self._transcoding_dict(group_data)
@@ -1064,6 +1194,13 @@ class WechatBasic(object):
 
 
     def modify_merchat_group_product(self, group_id, product_data_list):
+        """
+        修改分组商品
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param group_id: 分组ID
+        :param product_data_list: 分组的商品集合，列表格式
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         product_data_list = [self._transcoding_dict(product_data) for product_data in product_data_list]
@@ -1077,12 +1214,23 @@ class WechatBasic(object):
 
 
     def get_all_merchat_group(self):
+        """
+        获取所有分组
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._get('https://api.weixin.qq.com/merchant/group/getall')
 
 
     def get_merchat_group_by_id(self, group_id):
+        """
+        根据分组ID获取分组信息
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param group_id: 分组ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1093,7 +1241,16 @@ class WechatBasic(object):
         )
 
 
+    #货架管理接口
     def add_merchant_shelf(self, shelf_data, shelf_banner, shelf_name):
+        """
+        增加货架
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param shelf_data: 货架信息(数据说明详见《货架控件说明》
+        :param shelf_banner: 货架招牌图片Url(图片需调用图片上传接口获得图片Url填写至此，否则添加货架失败，建议尺寸为640*120，仅控件1-4有banner，控件5没有banner)
+        :param shelf_name: 货架名称
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         shelf_data = self._transcoding_dict(shelf_data)
@@ -1108,6 +1265,12 @@ class WechatBasic(object):
 
 
     def del_merchat_shelf_by_id(self, shelf_id):
+        """
+        删除货架
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param shelf_id: 货架ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1119,6 +1282,15 @@ class WechatBasic(object):
 
 
     def modify_merchat_shelf_by_id(self, shelf_id, shelf_data, shelf_banner, shelf_name):
+        """
+        修改货架
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param shelf_id: 货架ID
+        :param shelf_data: 货架信息(数据说明详见《货架控件说明》
+        :param shelf_banner: 货架招牌图片Url(图片需调用图片上传接口获得图片Url填写至此，否则添加货架失败，建议尺寸为640*120，仅控件1-4有banner，控件5没有banner)
+        :param shelf_name: 货架名称
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         shelf_data = self._transcoding_dict(shelf_data)
@@ -1134,12 +1306,23 @@ class WechatBasic(object):
 
 
     def get_all_merchat_shelf(self):
+        """
+        获取所有货架
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._get('https://api.weixin.qq.com/merchant/shelf/getall')
 
 
     def get_merchat_group_by_id(self, shelf_id):
+        """
+        根据货架ID获取货架信息
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param shelf_id: 货架ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1150,7 +1333,14 @@ class WechatBasic(object):
         )
 
 
+    #订单管理接口
     def get_merchat_order_by_id(self, order_id):
+        """
+        根据订单ID获取订单详情
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param order_id: 订单ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1162,6 +1352,14 @@ class WechatBasic(object):
 
 
     def get_merchat_order_by_filter(self, status=None, begintime=None, endtime=None):
+        """
+        根据订单状态/创建时间获取订单详情
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param status: 订单状态(不带该字段-全部状态, 2-待发货, 3-已发货, 5-已完成, 8-维权中, )
+        :param begintime: 订单创建时间起始时间(不带该字段则不按照时间做筛选)
+        :param endtime: 订单创建时间终止时间(不带该字段则不按照时间做筛选)
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         order_data = {}
@@ -1178,6 +1376,14 @@ class WechatBasic(object):
 
 
     def set_delivery_info(self, order_id, delivery_company, delivery_track_no):
+        """
+        设置订单发货信息
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param order_id: 订单ID
+        :param delivery_company: 物流公司ID(参考《物流公司ID》)
+        :param delivery_track_no: 运单ID
+        :return: 返回的 JSON 数据包
+        """
         self._check_appid_appsecret()
 
         return self._post(
@@ -1186,6 +1392,23 @@ class WechatBasic(object):
                 'order_id': order_id,
                 'delivery_company': delivery_company,
                 'delivery_track_no': delivery_track_no
+            }
+        )
+
+
+    def close_merchat_order_by_id(self, order_id):
+        """
+        关闭订单
+        详情请参考 http://www.cnblogs.com/txw1958/p/weixin-xiaodian.html
+        :param order_id: 订单ID
+        :return: 返回的 JSON 数据包
+        """
+        self._check_appid_appsecret()
+
+        return self._post(
+            url='https://api.weixin.qq.com/merchant/order/close',
+            data={
+                'order_id': order_id,
             }
         )
 
