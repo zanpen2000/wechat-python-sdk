@@ -1046,7 +1046,7 @@ class WechatBasic(object):
         """
         self._check_appid_appsecret()
 
-        product_data = self._transcoding_dict(product_data)
+        #product_data = self._transcoding_dict(product_data)
         return self._post(
             url='https://api.weixin.qq.com/merchant/category/stock/reduce',
             data={
